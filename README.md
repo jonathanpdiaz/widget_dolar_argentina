@@ -9,4 +9,7 @@ https://github.com/matryer/bitbar
 
 ## Instalation steps
 
-Download the main file and stored into your bitbat plugin folder.
+1. Clone the project.
+2. Link the main file from your Bit Bar plugin folder.
+    * `cd /Users/bitbar-plugins`
+    * `ln -s /Users/widget_dolar_argentina/currency-tracker.5m.py`
