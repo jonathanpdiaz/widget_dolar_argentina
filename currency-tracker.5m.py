@@ -36,10 +36,10 @@ def retryer():
             print ventaFormatted
         
         print "---"
-        print "🏦 $" + str("%.2f" % nacion["compra"]) + "/$"+ str("%.2f" % nacion["venta"]) + " ~ " + str("%.2f" % nacion["dif"]) + "%"
-        print "📊 $" + str(promedio["compra"]) + "/$"+ str(promedio["venta"]) + " ~ " + str("%.2f" % promedio["dif"]) + "%"
-        print "🔵 $" + str("%.2f" % blue["compra"]) + "/$"+ str("%.2f" % blue["venta"]) + " ~ " + str("%.2f" % blue["dif"]) + "%"
-        print "💣 " + str("%.f" % riesgo["unico"]) + " ~ " + str("%.2f" % riesgo["dif"]) + "%"
+        print "🏦 $" + str("%.2f" % nacion["compra"]) + "/$"+ str("%.2f" % nacion["venta"]) + " ~ " + str("%.2f" % nacion["dif"]) + "% | size=12"
+        print "📊 $" + str(promedio["compra"]) + "/$"+ str(promedio["venta"]) + " ~ " + str("%.2f" % promedio["dif"]) + "% | size=12"
+        print "🔵 $" + str("%.2f" % blue["compra"]) + "/$"+ str("%.2f" % blue["venta"]) + " ~ " + str("%.2f" % blue["dif"]) + "% | size=12"
+        print "💣 " + str("%.f" % riesgo["unico"]) + " ~ " + str("%.2f" % riesgo["dif"]) + "% | size=12"
     except IOError:
         time.sleep(5)
         retryer()
