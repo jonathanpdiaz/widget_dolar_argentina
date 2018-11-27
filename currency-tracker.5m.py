@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# <bitbar.title>Currency Tracker</bitbar.title>
+# <bitbar.title>Dolar Argentina</bitbar.title>
 # <bitbar.version>1.0</bitbar.version>
-# <bitbar.author>Maxime Bertheau</bitbar.author>
-# <bitbar.author.github>maxoumime</bitbar.author.github>
-# <bitbar.desc>Keep an eye on the currencies you choose from your menu bar !</bitbar.desc>
-# <bitbar.image>https://nothingreally.botler.me/bitbar.currency-tracker.png</bitbar.image>
+# <bitbar.author>Jony & Raul</bitbar.author>
+# <bitbar.author.github>jonathanpdiaz</bitbar.author.github>
+# <bitbar.desc>Keep an eye on the Dolar in Argentina !</bitbar.desc>
+# <bitbar.image>https://github.com/jonathanpdiaz/widget_dolar_argentina/raw/master/Screen%20Shot%202018-11-27%20at%2013.47.32.png?raw=true</bitbar.image>
 
 import urllib2
 import json
