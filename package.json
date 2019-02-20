@@ -1,0 +1,26 @@
+{
+  "name": "widget_dolar_argentina",
+  "version": "1.0.0",
+  "description": "Dolar Argentina Widget (include BCRA, Blue and Rofex Future USD)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathanpdiaz/widget_dolar_argentina.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonathanpdiaz/widget_dolar_argentina/issues"
+  },
+  "homepage": "https://github.com/jonathanpdiaz/widget_dolar_argentina#readme",
+  "dependencies": {
+    "bitbar": "^0.4.0",
+    "cheerio": "^1.0.0-rc.2",
+    "got": "^9.6.0",
+    "he": "^1.2.0",
+    "lodash": "^4.17.11"
+  }
+}

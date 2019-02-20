@@ -12,5 +12,5 @@ https://github.com/matryer/bitbar
 1. Clone the project.
 2. Link the main file from your Bit Bar plugin folder.
     * `cd /Users/bitbar-plugins`
-    * `ln -s /Users/widget_dolar_argentina/currency-tracker.5m.py`
-    * Alternatively, to change the execution frequency, use: `ln -s /Users/widget_dolar_argentina/currency-tracker.5m.py currency-tracker.10m.py`
+    * `ln -s /Users/widget_dolar_argentina/index.js currency-tracker.5m.js`
+    * Alternatively, to change the execution frequency, use: `ln -s /Users/widget_dolar_argentina/currency-tracker.5m.js currency-tracker.10m.js`
