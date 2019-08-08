@@ -84,18 +84,18 @@ async function getDolarStats() {
     })
   );
   menu.push(bitbar.separator);
-  const mae = await getMAEForex();
+  // const mae = await getMAEForex();
+  // menu.push({
+  //   text: he.decode(mae),
+  //   href: MAE_ROFEX_URL,
+  //   length: 40,
+  //   size: 10
+  // });
+  menu.push(bitbar.separator);
   menu.push({
-    text: he.decode(mae),
-    href: MAE_ROFEX_URL,
-    length: 40,
-    size: 10
+    text: "🔄",
+    refresh: true
   });
-//   menu.push(bitbar.separator);
-//   menu.push({
-//     text: "🔄",
-//     refresh: true
-//   });
   bitbar(menu);
 }
 
