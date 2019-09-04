@@ -10,12 +10,14 @@
 const got = require("got");
 const bitbar = require("bitbar");
 const cheerio = require("cheerio");
-const { find, template } = require("lodash");
+const { find, template, get } = require("lodash");
 const he = require("he");
 
 const STATS_INFO_URL =
   "https://www.cronista.com/MercadosOnline/json/getValoresCalculadora.html";
 const MAE_ROFEX_URL = "http://www.mae.com.ar/mercados/Forex/Default.aspx";
+const RIESGO_URL =
+  "https://static.coins.infobae.com/cotizacion-simple/dolar-riesgo.json";
 
 const STATS_INFO_INDEX = [
   {
@@ -38,8 +40,9 @@ const STATS_INFO_INDEX = [
   },
   {
     currency: "BITCOIN",
-    replace:
-      template("⛏ $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%")
+    replace: template(
+      "⛏ $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+    )
   }
 ];
 
@@ -66,6 +69,7 @@ async function getMAEForex() {
 
 async function getDolarStats() {
   const info = await got(STATS_INFO_URL, { json: true });
+  const riesgo = await got(RIESGO_URL, { json: true });
   const items = info.body;
   const dolar = find(items, { Nombre: STATS_INFO_INDEX[0].currency });
   const message = getMainMessage(dolar);
@@ -85,6 +89,11 @@ async function getDolarStats() {
       };
     })
   );
+  menu.push(bitbar.separator);
+  menu.push({
+    text: `💣 ${get(riesgo.body, "items[1].unico")}`,
+    size: 13
+  });
   menu.push(bitbar.separator);
   // const mae = await getMAEForex();
   // menu.push({
