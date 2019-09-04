@@ -13,37 +13,39 @@ const cheerio = require("cheerio");
 const { find, template } = require("lodash");
 const he = require("he");
 
-const STATS_INFO_URL = "https://s3.amazonaws.com/status-coins/nums.json";
+const STATS_INFO_URL =
+  "https://www.cronista.com/MercadosOnline/json/getValoresCalculadora.html";
 const MAE_ROFEX_URL = "http://www.mae.com.ar/mercados/Forex/Default.aspx";
 
 const STATS_INFO_INDEX = [
   {
-    currency: "Dólar Banco Nación",
-    template: template(
-      "🏦 $${parseFloat(compra).toFixed(2)}/$${parseFloat(venta).toFixed(2)} ~ ${parseFloat(dif).toFixed(2)}%"
+    currency: "DÓLAR B. NACIÓN",
+    replace: template(
+      "🏦 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
-    currency: "Dólar Promedio BCRA",
-    template: template(
-      "📊 $${parseFloat(compra).toFixed(2)}/$${parseFloat(venta).toFixed(2)} ~ ${parseFloat(dif).toFixed(2)}%"
+    currency: "DÓLAR CDO C/LIQ",
+    replace: template(
+      "💧 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
-    currency: "Dólar Blue",
-    template: template(
-      "🔵 $${parseFloat(compra).toFixed(2)}/$${parseFloat(venta).toFixed(2)} ~ ${parseFloat(dif).toFixed(2)}%"
+    currency: "DÓLAR BLUE",
+    replace: template(
+      "🔵 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
-    currency: "Riesgo País",
-    template: template("💣 ${unico} ~ ${parseFloat(dif).toFixed(2)}%")
+    currency: "BITCOIN",
+    replace:
+      template("⛏ $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%")
   }
 ];
 
 function getMainMessage(currency) {
-  const venta = currency && currency.venta && currency.venta.toFixed(2);
-  const variacion = currency && currency.dif;
+  const venta = currency && currency.Venta && currency.Venta.toFixed(2);
+  const variacion = currency && currency.VariacionPorcentual;
   if (variacion > 2) {
     return `💸 $${venta}`;
   } else if (variacion > 0) {
@@ -51,7 +53,7 @@ function getMainMessage(currency) {
   } else if (variacion < 0) {
     return `📉 $${venta}`;
   } else {
-    return venta;
+    return `${venta}`;
   }
 }
 
@@ -64,8 +66,8 @@ async function getMAEForex() {
 
 async function getDolarStats() {
   const info = await got(STATS_INFO_URL, { json: true });
-  const items = info.body.items;
-  const dolar = find(items, { currency: STATS_INFO_INDEX[0].currency });
+  const items = info.body;
+  const dolar = find(items, { Nombre: STATS_INFO_INDEX[0].currency });
   const message = getMainMessage(dolar);
   let menu = [];
   menu.push({
@@ -75,10 +77,10 @@ async function getDolarStats() {
   });
   menu.push(bitbar.separator);
   menu = menu.concat(
-    STATS_INFO_INDEX.map(({ currency, template }) => {
-      const item = find(items, { currency }) || {};
+    STATS_INFO_INDEX.map(({ currency, replace }) => {
+      const item = find(items, { Nombre: currency }) || {};
       return {
-        text: template(item),
+        text: replace(item),
         size: 12
       };
     })
