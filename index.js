@@ -10,7 +10,7 @@
 const got = require("got");
 const bitbar = require("bitbar");
 const cheerio = require("cheerio");
-const { nth, template, get, values, first } = require("lodash");
+const { nth, template, get, values } = require("lodash");
 const he = require("he");
 
 const STATS_INFO_URL =
@@ -69,7 +69,7 @@ async function getDolarStats() {
   const info = await got(STATS_INFO_URL, { json: true });
   const riesgo = await got(RIESGO_URL, { json: true });
   const items = values(info.body);
-  const dolar = first(items);
+  const dolar = nth(items, 1);
   const message = getMainMessage(dolar);
   let menu = [];
   menu.push({
