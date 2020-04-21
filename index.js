@@ -39,7 +39,7 @@ const STATS_INFO_INDEX = [
   {
     currency: "Riesgo País",
     replace: template(
-      "${parseFloat(variacion) > 0 ? '🔥': '❄️'} ${parseFloat(valor).toFixed(2)} ~ ${parseFloat(variacion).toFixed(2)}% ${parseFloat(variacion) < -2 ? '🔥':''}"
+      "${parseFloat(variacion) > 0 ? '🔥': '❄️'} ${parseFloat(valor).toFixed(2)} ~ ${parseFloat(variacion).toFixed(2)}%"
     ),
     index: 3,
   },
