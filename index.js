@@ -9,46 +9,62 @@
 
 const got = require("got");
 const bitbar = require("bitbar");
-const { nth, template, get, values } = require("lodash");
+const { nth, template, find } = require("lodash");
 
 const STATS_INFO_URL =
-  "https://www.cronista.com/MercadosOnline/json/eccheader.json?_rnd=282633634327";
+  `https://www.cronista.com/templateGetPrincipal.html?r=${Math.random() * 10000}`;
 
-const STATS_INFO_INDEX = [
+const SATOSHI_COINS_URL = 'https://api.satoshitango.com/v3/graph/ARS';
+
+const MONEDAS = [
   {
-    currency: "Dólar B.Nación",
+    Nombre: "DÓLAR B. NACIÓN",
     replace: template(
-      "🏦 $${parseFloat(valorcompra).toFixed(2)}/$${parseFloat(valorventa).toFixed(2)} ~ ${parseFloat(variacion).toFixed(2)}%"
-    ),
-    index: 0,
+      "🇦🇷 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+    )
   },
   {
-    currency: "Dólar Contado con Liqui",
+    Nombre: "DÓLAR MAYORISTA",
     replace: template(
-      "💧 $${parseFloat(valorcompra).toFixed(2)}/$${parseFloat(valorventa).toFixed(2)} ~ ${parseFloat(variacion).toFixed(2)}%"
-    ),
-    index: 1,
+      "🏦 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+    )
   },
   {
-    currency: "Merval",
+    Nombre: "DÓLAR BLUE",
     replace: template(
-      "${parseFloat(variacion) > 0 ? '📈': '📉'} $${parseFloat(valor).toFixed(2)} ~ ${parseFloat(variacion).toFixed(2)}"
-    ),
-    index: 2,
+      "💙 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+    )
   },
   {
-    currency: "Riesgo País",
+    Nombre: "DÓLAR CDO C/LIQ",
     replace: template(
-      "${parseFloat(variacion) > 0 ? '🔥': '❄️'} ${parseFloat(valor).toFixed(2)} ~ ${parseFloat(variacion).toFixed(2)}%"
-    ),
-    index: 3,
+      "CCL $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+    )
   },
+  {
+    Nombre: "DÓLAR MEP Contado",
+    replace: template(
+      "MEP $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+    )
+  },
+  {
+    Nombre: "USDC",
+    replace: template(
+      "USDC $${parseFloat(low).toFixed(2)}/$${parseFloat(high).toFixed(2)} ~ ${parseFloat(change)}%"
+    )
+  },
+  {
+    Nombre: "BITCOIN USD",
+    replace: template(
+      "BTC US$${parseFloat(Compra).toFixed(2)}/US$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+    )
+  }
 ];
 
 function getMainMessage(currency) {
   const venta =
-    currency && currency.valorventa && currency.valorventa.toFixed(2);
-  const variacion = currency && currency.variacion;
+    currency && currency.Venta && currency.Venta.toFixed(2);
+  const variacion = currency && currency.VariacionPorcentual;
   if (variacion > 2) {
     return `💸 $${venta}`;
   } else if (variacion > 0) {
@@ -62,8 +78,14 @@ function getMainMessage(currency) {
 
 async function getDolarStats() {
   const info = await got(STATS_INFO_URL, { json: true });
-  const items = values(info.body);
-  const dolar = nth(items, 1);
+  const { monedas, indices, commodities, acciones, tasas, bonos } = info.body;
+  const rawCoins = await got(SATOSHI_COINS_URL, { json: true });
+  const { data: { graph } } = rawCoins.body;
+  const coins = Object.keys(graph).map(Nombre => {
+    return { Nombre, ...graph[Nombre] }
+  });
+  const items = monedas.concat(coins);
+  const dolar = nth(monedas, 1);
   const message = getMainMessage(dolar);
   let menu = [];
   menu.push({
@@ -73,8 +95,8 @@ async function getDolarStats() {
   });
   menu.push(bitbar.separator);
   menu = menu.concat(
-    STATS_INFO_INDEX.map(({ index, replace }) => {
-      const item = nth(items, index);
+    MONEDAS.map(({ Nombre, replace }) => {
+      const item = find(items, { Nombre });
       return {
         text: replace(item),
         size: 12,
