@@ -20,43 +20,43 @@ const MONEDAS = [
   {
     Nombre: "DÓLAR B. NACIÓN",
     replace: template(
-      "🇦🇷 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+      "🇦🇷\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
     Nombre: "DÓLAR MAYORISTA",
     replace: template(
-      "🏦 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+      "🏦\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
     Nombre: "DÓLAR BLUE",
     replace: template(
-      "💙 $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+      "💙\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
     Nombre: "DÓLAR CDO C/LIQ",
     replace: template(
-      "CCL $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+      "CCL\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
     Nombre: "DÓLAR MEP Contado",
     replace: template(
-      "MEP $${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+      "MEP\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   },
   {
     Nombre: "USDC",
     replace: template(
-      "USDC $${parseFloat(low).toFixed(2)}/$${parseFloat(high).toFixed(2)} ~ ${parseFloat(change)}%"
+      "USDC\t$${parseFloat(low).toFixed(2)}/$${parseFloat(high).toFixed(2)} ~ ${parseFloat(change)}%"
     )
   },
   {
     Nombre: "BITCOIN USD",
     replace: template(
-      "BTC US$${parseFloat(Compra).toFixed(2)}/US$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
+      "BTC\tUS$${parseFloat(Compra).toFixed(2)}/US$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
   }
 ];
@@ -99,13 +99,16 @@ async function getDolarStats() {
       const item = find(items, { Nombre });
       return {
         text: replace(item),
+        font: "Courier New",
+        trim: false,
+        color: bitbar.darkMode ? "white" : "black",
         size: 12,
       };
     })
   );
   menu.push(bitbar.separator);
   menu.push({
-    text: "🔄",
+    text: "🔄 Refresh",
     refresh: true,
   });
   bitbar(menu);
