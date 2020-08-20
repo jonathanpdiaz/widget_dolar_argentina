@@ -9,12 +9,13 @@
 
 const got = require("got");
 const bitbar = require("bitbar");
-const { nth, template, find } = require("lodash");
+const { nth, template, find, last } = require("lodash");
 
 const STATS_INFO_URL =
   `https://www.cronista.com/templateGetPrincipal.html?r=${Math.random() * 10000}`;
 
 const SATOSHI_COINS_URL = 'https://api.satoshitango.com/v3/graph/ARS';
+const RIPIO_USDC_URL = 'https://api.exchange.ripio.com/api/v1/rate/USDC_ARS/';
 
 const MONEDAS = [
   {
@@ -48,9 +49,15 @@ const MONEDAS = [
     )
   },
   {
-    Nombre: "USDC",
+    Nombre: "USDC SATOSHI",
     replace: template(
-      "USDC\t$${parseFloat(low).toFixed(2)}/$${parseFloat(high).toFixed(2)} ~ ${parseFloat(change)}%"
+      "USDC ST\t$${parseFloat(last_price).toFixed(2)} [$${parseFloat(low).toFixed(2)}-$${parseFloat(high).toFixed(2)}] ~ ${parseFloat(change)}%"
+    )
+  },
+  {
+    Nombre: "USDC RIPIO",
+    replace: template(      
+      "USDC RP\t$${parseFloat(last_price).toFixed(2)} [$${parseFloat(low).toFixed(2)}-$${parseFloat(high).toFixed(2)}] ~ ${parseFloat(variation)}%"
     )
   },
   {
@@ -82,9 +89,11 @@ async function getDolarStats() {
   const rawCoins = await got(SATOSHI_COINS_URL, { json: true });
   const { data: { graph } } = rawCoins.body;
   const coins = Object.keys(graph).map(Nombre => {
-    return { Nombre, ...graph[Nombre] }
+    return { Nombre: `${Nombre} SATOSHI`, ...graph[Nombre], last_price: last(graph[Nombre].graph) }
   });
   const items = monedas.concat(coins);
+  const ripoUSDC = await got(RIPIO_USDC_URL, { json: true});
+  items.push({"Nombre":"USDC RIPIO", ...ripoUSDC.body});
   const dolar = nth(monedas, 1);
   const message = getMainMessage(dolar);
   let menu = [];
