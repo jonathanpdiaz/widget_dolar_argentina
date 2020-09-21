@@ -92,7 +92,12 @@ async function getDolarStats() {
     return { Nombre: `${Nombre} SATOSHI`, ...graph[Nombre], last_price: last(graph[Nombre].graph) }
   });
   const items = monedas.concat(coins);
-  const ripoUSDC = await got(RIPIO_USDC_URL, { json: true});
+  let ripoUSDC;
+  try {
+    ripoUSDC = await got(RIPIO_USDC_URL, { json: true});
+  }catch {
+    ripoUSDC = {body:{"pair":"USDC_ARS","last_price":"0","low":"0","high":"0","variation":"0","volume":"0","base":"USDC","base_name":"USD Coin","quote":"ARS","quote_name":"Argentine Peso","bid":"0","ask":"0","avg":"0","ask_volume":"0","bid_volume":"0"}};
+  }
   items.push({"Nombre":"USDC RIPIO", ...ripoUSDC.body});
   const dolar = nth(monedas, 1);
   const message = getMainMessage(dolar);
