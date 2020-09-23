@@ -109,13 +109,6 @@ async function getDolarStats() {
     return { Nombre: `${Nombre} SATOSHI`, ...graph[Nombre], last_price: last(graph[Nombre].graph) }
   });
   const items = monedas.concat(coins);
-  let ripioUSDC;
-  try {
-    ripioUSDC = await got(RIPIO_USDC_URL, { json: true });
-  } catch (e) {
-    //failed to load ripio
-  }
-  items.push({ "Nombre": "USDC RIPIO", ...ripioUSDC.body });
   let buenBitDAI;
   try {
     const { body: data } = await got(BUENBIT_DAI_URL, { json: true });
@@ -131,6 +124,13 @@ async function getDolarStats() {
     //failed to load buenbit
   }
   items.push({ "Nombre": "DÓLAR BUEN BIT", ...buenBitDAI });
+  let ripoUSDC;
+  try {
+    ripoUSDC = await got(RIPIO_USDC_URL, { json: true});
+  }catch {
+    ripoUSDC = {body:{"pair":"USDC_ARS","last_price":"0","low":"0","high":"0","variation":"0","volume":"0","base":"USDC","base_name":"USD Coin","quote":"ARS","quote_name":"Argentine Peso","bid":"0","ask":"0","avg":"0","ask_volume":"0","bid_volume":"0"}};
+  }
+  items.push({"Nombre":"USDC RIPIO", ...ripoUSDC.body});
   const dolar = nth(monedas, 1);
   const message = getMainMessage(dolar);
   let menu = [];
