@@ -16,6 +16,7 @@ const STATS_INFO_URL =
 
 const SATOSHI_COINS_URL = 'https://api.satoshitango.com/v3/graph/ARS';
 const RIPIO_USDC_URL = 'https://api.exchange.ripio.com/api/v1/rate/USDC_ARS/';
+const BUENBIT_DAI_URL = 'https://be.buenbit.com/api/market/tickers/';
 
 const MONEDAS = [
   {
@@ -49,6 +50,12 @@ const MONEDAS = [
     )
   },
   {
+    Nombre: "DÓLAR BUEN BIT",
+    replace: template(
+      "DAI\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)}"
+    )
+  },
+  {
     Nombre: "USDC SATOSHI",
     replace: template(
       "USDC ST\t$${parseFloat(last_price).toFixed(2)} [$${parseFloat(low).toFixed(2)}-$${parseFloat(high).toFixed(2)}] ~ ${parseFloat(change)}%"
@@ -56,7 +63,7 @@ const MONEDAS = [
   },
   {
     Nombre: "USDC RIPIO",
-    replace: template(      
+    replace: template(
       "USDC RP\t$${parseFloat(last_price).toFixed(2)} [$${parseFloat(low).toFixed(2)}-$${parseFloat(high).toFixed(2)}] ~ ${parseFloat(variation)}%"
     )
   },
@@ -84,16 +91,46 @@ function getMainMessage(currency) {
 }
 
 async function getDolarStats() {
-  const info = await got(STATS_INFO_URL, { json: true });
+  let info;
+  try {
+    info = await got(STATS_INFO_URL, { json: true });
+  } catch (e) {
+    //failed to load stats
+  }
   const { monedas, indices, commodities, acciones, tasas, bonos } = info.body;
-  const rawCoins = await got(SATOSHI_COINS_URL, { json: true });
+  let rawCoins;
+  try {
+    rawCoins = await got(SATOSHI_COINS_URL, { json: true });
+  } catch (e) {
+    //failed to load coins
+  }
   const { data: { graph } } = rawCoins.body;
   const coins = Object.keys(graph).map(Nombre => {
     return { Nombre: `${Nombre} SATOSHI`, ...graph[Nombre], last_price: last(graph[Nombre].graph) }
   });
   const items = monedas.concat(coins);
-  const ripoUSDC = await got(RIPIO_USDC_URL, { json: true});
-  items.push({"Nombre":"USDC RIPIO", ...ripoUSDC.body});
+  let ripioUSDC;
+  try {
+    ripioUSDC = await got(RIPIO_USDC_URL, { json: true });
+  } catch (e) {
+    //failed to load ripio
+  }
+  items.push({ "Nombre": "USDC RIPIO", ...ripioUSDC.body });
+  let buenBitDAI;
+  try {
+    const { body: data } = await got(BUENBIT_DAI_URL, { json: true });
+    const daiusdselling = parseFloat(data.object.daiusd.selling_price);
+    const daiarsselling = parseFloat(data.object.daiars.selling_price);
+    const daiusdpurchase = parseFloat(data.object.daiusd.purchase_price);
+    const daiarspurchase = parseFloat(data.object.daiars.purchase_price);
+    buenBitDAI = {
+      Compra: daiarspurchase / daiusdselling,
+      Venta: daiarsselling / daiusdpurchase
+    }
+  } catch (e) {
+    //failed to load buenbit
+  }
+  items.push({ "Nombre": "DÓLAR BUEN BIT", ...buenBitDAI });
   const dolar = nth(monedas, 1);
   const message = getMainMessage(dolar);
   let menu = [];
