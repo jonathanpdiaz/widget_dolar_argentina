@@ -2,7 +2,7 @@
 
 Bit Bar script to display current dolar valuation in Argentina.
 
-![Screen shot](https://github.com/jonathanpdiaz/widget_dolar_argentina/blob/master/screenshot.png?raw=true "Logo Title Text 1")
+![Screen shot](https://github.com/jonathanpdiaz/widget_dolar_argentina/blob/master/screenshot20201021.png?raw=true "Logo Title Text 1")
 
 ## Get bitbar
 
