@@ -7,6 +7,15 @@ class Base {
         this._name = undefined;
     }
 
+    static parse(amount) {
+        if (typeof amount === 'string') {
+            amount = amount.replace(',', '.');
+            amount = amount.replace('%', '');
+        }
+        amount = parseFloat(amount).toFixed(2);
+        return amount;
+    }
+
     async getStats() {
         if (!this._base_url) {
             throw new Error('Missing base url');

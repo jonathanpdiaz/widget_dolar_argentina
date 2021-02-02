@@ -16,7 +16,7 @@ class Buenbit extends Base {
         const daiarspurchase = parseFloat(data.object.daiars.purchase_price);
         const compra = daiarspurchase / daiusdselling;
         const venta = daiarsselling / daiusdpurchase;
-        return `DAI\t$${parseFloat(compra).toFixed(2)}/$${parseFloat(venta).toFixed(2)}`;
+        return `DAI\t$${Base.parse(compra)}/$${Base.parse(venta)}`;
     }
 }
 

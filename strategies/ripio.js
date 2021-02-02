@@ -12,10 +12,11 @@ class Ripio extends Base {
     parseStats() {
         const usdc = this._stats;
         if (usdc) {
-            const last_price = parseFloat(usdc.last_price).toFixed(2);
-            const low = parseFloat(usdc.low).toFixed(2);
-            const high = parseFloat(usdc.high).toFixed(2);
-            return `USDC RP\t$${last_price} [$${low}-$${high}] ~ ${usdc.variation}%`
+            const last_price = Base.parse(usdc.last_price);
+            const low = Base.parse(usdc.low);
+            const high = Base.parse(usdc.high);
+            const variation = Base.parse(usdc.variation);
+            return `USDC RP\t$${last_price} [$${low}-$${high}] ~ ${variation}%`
         }
     }
 }

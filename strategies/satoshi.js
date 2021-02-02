@@ -12,10 +12,11 @@ class Satoshi extends Base {
     parseStats() {
         const usdc = get(this._stats, 'data.graph.USDC');
         if (usdc) {
-            const lastPrice = last(usdc.graph)
-            const low = parseFloat(usdc.low).toFixed(2);
-            const high = parseFloat(usdc.high).toFixed(2);
-            return `USDC ST\t$${lastPrice} [$${low}-$${high}] ~ ${usdc.change}%`
+            const lastPrice = Base.parse(last(usdc.graph));
+            const low = Base.parse(usdc.low);
+            const high = Base.parse(usdc.high);
+            const change = Base.parse(usdc.change);
+            return `USDC ST\t$${lastPrice} [$${low}-$${high}] ~ ${change}%`
         }
     }
 }

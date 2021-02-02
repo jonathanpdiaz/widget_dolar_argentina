@@ -9,9 +9,8 @@ class Blue extends Base {
     }
 
     parseStats() {
-        const venta = this._stats.venta;
-        let variacion = this._stats.variacion.replace('%', '');
-        variacion = variacion.replace(',', '.');
+        const venta = Base.parse(this._stats.venta);
+        let variacion = Base.parse(this._stats.variacion);
         variacion = parseFloat(variacion);
         if (variacion > 2) {
             return `💸 $${venta}`;

@@ -25,9 +25,14 @@ async function applyStrategy(strategy) {
     try {
         await instance.getStats();
     } catch (error) {
-        return [`${instance._name} failed.`];
+        return `${instance._name} request failed.`;
     }
-    return instance.parseStats();
+    try {
+        const data = instance.parseStats();
+        return data;
+    } catch (e) {
+        return `${instance._name} parse failed.`;
+    }
 }
 
 async function getStats() {
