@@ -9,7 +9,7 @@
 
 const got = require("got");
 const bitbar = require("bitbar");
-const { nth, template, find, last } = require("lodash");
+const { nth, template, find, last, first } = require("lodash");
 
 const STATS_INFO_URL =
   `https://www.cronista.com/templateGetPrincipal.html?r=${Math.random() * 10000}`;
@@ -77,8 +77,8 @@ const MONEDAS = [
 
 function getMainMessage(currency) {
   const venta =
-    currency && currency.Venta && currency.Venta.toFixed(2);
-  const variacion = currency && currency.VariacionPorcentual;
+    currency && currency.last_price && currency.last_price.toFixed(2);
+  const variacion = currency && currency.change;
   if (variacion > 2) {
     return `💸 $${venta}`;
   } else if (variacion > 0) {
@@ -132,8 +132,9 @@ async function getDolarStats() {
     ripoUSDC = {body:{"pair":"USDC_ARS","last_price":"0","low":"0","high":"0","variation":"0","volume":"0","base":"USDC","base_name":"USD Coin","quote":"ARS","quote_name":"Argentine Peso","bid":"0","ask":"0","avg":"0","ask_volume":"0","bid_volume":"0"}};
   }
   items.push({"Nombre":"USDC RIPIO", ...ripoUSDC.body});
-  const dolar = nth(monedas, 1);
-  const message = getMainMessage(dolar);
+
+  const satoshi = first(coins.filter(c => c.Nombre === 'USDC SATOSHI'));
+  const message = getMainMessage(satoshi);
   let menu = [];
   menu.push({
     text: message,
