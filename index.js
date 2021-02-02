@@ -45,8 +45,9 @@ async function getStats() {
 }
 
 async function prepareWidget() {
-    const blue = await applyStrategy(Blue);
     let menu = [];
+    
+    const blue = await applyStrategy(Blue);
     menu.push(blue);
     menu.push(bitbar.separator);
 
