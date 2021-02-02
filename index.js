@@ -19,7 +19,7 @@ const RIPIO_USDC_URL = 'https://api.exchange.ripio.com/api/v1/rate/USDC_ARS/';
 const BUENBIT_DAI_URL = 'https://be.buenbit.com/api/market/tickers/';
 
 const MONEDAS = [
-  {
+  /*{
     Nombre: "DÓLAR B. NACIÓN",
     replace: template(
       "🇦🇷\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
@@ -48,7 +48,7 @@ const MONEDAS = [
     replace: template(
       "MEP\t$${parseFloat(Compra).toFixed(2)}/$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
-  },
+  },*/
   {
     Nombre: "DÓLAR BUEN BIT",
     replace: template(
@@ -66,13 +66,13 @@ const MONEDAS = [
     replace: template(
       "USDC RP\t$${parseFloat(last_price).toFixed(2)} [$${parseFloat(low).toFixed(2)}-$${parseFloat(high).toFixed(2)}] ~ ${parseFloat(variation)}%"
     )
-  },
+  }/*,
   {
     Nombre: "BITCOIN USD",
     replace: template(
       "BTC\tUS$${parseFloat(Compra).toFixed(2)}/US$${parseFloat(Venta).toFixed(2)} ~ ${parseFloat(VariacionPorcentual).toFixed(2)}%"
     )
-  }
+  }*/
 ];
 
 function getMainMessage(currency) {
@@ -91,13 +91,14 @@ function getMainMessage(currency) {
 }
 
 async function getDolarStats() {
-  let info;
+  let dolarBody = {};
   try {
-    info = await got(STATS_INFO_URL, { json: true });
+    let info = await got(STATS_INFO_URL, { json: true });
+    dolarBody = info.body;
   } catch (e) {
     //failed to load stats
   }
-  const { monedas, indices, commodities, acciones, tasas, bonos } = info.body;
+  const monedas = dolarBody.monedas ? dolarBody.monedas : [];
   let rawCoins;
   try {
     rawCoins = await got(SATOSHI_COINS_URL, { json: true });
