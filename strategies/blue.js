@@ -15,9 +15,9 @@ class Blue extends Base {
         if (variacion > 2) {
             return `💸 $${venta}`;
         } else if (variacion > 0) {
-            return `📈 $${venta}`;
+            return `⬆ $${venta}`;
         } else if (variacion < 0) {
-            return `📉 $${venta}`;
+            return `⬇ $${venta}`;
         } else {
             return `$${venta}`;
         }
