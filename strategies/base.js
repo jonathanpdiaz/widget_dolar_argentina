@@ -16,11 +16,11 @@ class Base {
         return amount;
     }
 
-    async getStats() {
+    async getStats(props) {
         if (!this._base_url) {
             throw new Error('Missing base url');
         }
-        const response = await got(this._base_url, { json: true });
+        const response = await got(this._base_url, { headers: this._headers, json: true, ...props });
         this._stats = response.body;
         return this._stats;
     }

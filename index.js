@@ -7,18 +7,13 @@
 //  <bitbar.desc>Keep an eye on the Dolar in Argentina !</bitbar.desc>
 //  <bitbar.image>https://github.com/jonathanpdiaz/widget_dolar_argentina/raw/master/Screen%20Shot%202018-11-27%20at%2013.47.32.png?raw=true</bitbar.image>
 
-
-const got = require("got");
 const bitbar = require("bitbar");
 const { flatten, compact } = require("lodash");
 
 const Blue = require('./strategies/blue');
 const Ambito = require('./strategies/ambito');
-const Satoshi = require('./strategies/satoshi');
-const Ripio = require('./strategies/ripio');
-const Buenbit = require('./strategies/buenbit');
 
-const strategies = [Ambito, Satoshi, Ripio, Buenbit];
+const strategies = [Ambito];
 
 async function applyStrategy(strategy) {
     const instance = new strategy();
@@ -31,6 +26,7 @@ async function applyStrategy(strategy) {
         const data = instance.parseStats();
         return data;
     } catch (e) {
+        console.log(e);
         return `${instance._name} parse failed.`;
     }
 }
@@ -46,7 +42,7 @@ async function getStats() {
 
 async function prepareWidget() {
     let menu = [];
-    
+
     const blue = await applyStrategy(Blue);
     menu.push(blue);
     menu.push(bitbar.separator);
