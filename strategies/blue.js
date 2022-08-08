@@ -14,7 +14,7 @@ class Blue extends Base {
         variacion = parseFloat(variacion);
         if (variacion > 2) {
             return `💸 $${venta}`;
-        } else if (variacion < 2) {
+        } else if (variacion < -2) {
             return `🧸 $${venta}`;
         } else if (variacion > 0) {
             return `⬆ $${venta}`;
