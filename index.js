@@ -27,7 +27,6 @@ async function applyStrategy(strategy) {
         const data = instance.parseStats();
         return data;
     } catch (e) {
-        console.log(e);
         return `${instance._name} parse failed.`;
     }
 }
