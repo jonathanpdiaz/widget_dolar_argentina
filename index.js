@@ -12,8 +12,9 @@ const { flatten, compact } = require("lodash");
 
 const Blue = require('./strategies/blue');
 const Ambito = require('./strategies/ambito');
+const CryptoYa = require('./strategies/cryptoya');
 
-const strategies = [Ambito];
+const strategies = [Ambito, CryptoYa];
 
 async function applyStrategy(strategy) {
     const instance = new strategy();
@@ -35,7 +36,7 @@ async function getStats() {
     const promises = strategies.map(strategy => {
         return applyStrategy(strategy);
     })
-    const items = await Promise.all(promises);
+    const items = await Promise.all(promises)
     const menu = compact(flatten(items));
     return menu;
 }
