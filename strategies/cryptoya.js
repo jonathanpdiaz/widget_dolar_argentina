@@ -17,6 +17,7 @@ class CryptoYa extends Base {
             { key: "satoshitango", label: "satoshi" },
             { key: "lemoncash", label: "lemon" },
             { key: "belo", label: "belo" },
+            { key: "letsbit", label: "letsbit" },
         ]
         let values = keys.map(item => {
             const { ask, bid } = this._stats[item.key];
