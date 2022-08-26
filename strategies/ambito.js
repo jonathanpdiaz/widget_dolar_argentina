@@ -17,7 +17,7 @@ class Ambito extends Base {
         ]
         return keys.map(item => {
             const { compra, venta, variacion } = this._stats.find(stat => stat.nombre === item.key);
-            return `${item.label}\t$${Base.parse(compra)}/$${Base.parse(venta)} ~ ${Base.parse(variacion)}%`
+            return { label: `${item.label}\t$${Base.parse(compra)}/$${Base.parse(venta)} ~ ${Base.parse(variacion)}%` }
         })
     }
 }

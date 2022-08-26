@@ -16,7 +16,7 @@ class Satoshi extends Base {
             const low = Base.parse(usdc.low);
             const high = Base.parse(usdc.high);
             const change = Base.parse(usdc.change);
-            return `USDC ST\t$${lastPrice} [$${low}-$${high}] ~ ${change}%`
+            return { label: `USDC ST\t$${lastPrice} [$${low}-$${high}] ~ ${change}%` }
         }
     }
 }
