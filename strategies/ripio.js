@@ -16,7 +16,7 @@ class Ripio extends Base {
             const low = Base.parse(usdc.low);
             const high = Base.parse(usdc.high);
             const variation = Base.parse(usdc.variation);
-            return `USDC RP\t$${last_price} [$${low}-$${high}] ~ ${variation}%`
+            return { label: `USDC RP\t$${last_price} [$${low}-$${high}] ~ ${variation}%` }
         }
     }
 }

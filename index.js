@@ -46,22 +46,19 @@ async function prepareWidget() {
     const blue = await applyStrategy(Blue);
     menu.push(blue);
     menu.push(bitbar.separator);
-
     const stats = await getStats();
     const coins = stats.map(stat => {
         return {
-            text: stat,
-            font: "Courier New",
-            trim: false,
+            text: stat.label,
+            image: stat.image,
             color: bitbar.darkMode ? "white" : "black",
-            size: 12,
         };
     });
     menu = menu.concat(coins);
     menu.push(bitbar.separator);
 
     menu.push({
-        text: "🔄 Refresh",
+        text: "♻︎ Refresh",
         refresh: true,
     });
     bitbar(menu);
