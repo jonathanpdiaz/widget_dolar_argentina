@@ -1,5 +1,4 @@
 const Base = require('./base');
-const { get, first } = require('lodash');
 
 class Ripio extends Base {
 
