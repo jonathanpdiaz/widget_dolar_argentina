@@ -18,7 +18,7 @@
   "homepage": "https://github.com/jonathanpdiaz/widget_dolar_argentina#readme",
   "dependencies": {
     "bitbar": "^0.4.0",
-    "got": "^9.6.0",
+    "got": "^11.8.5",
     "lodash": ">=4.17.21"
   }
 }
