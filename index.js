@@ -7,18 +7,14 @@
 //  <bitbar.desc>Keep an eye on the Dolar in Argentina !</bitbar.desc>
 //  <bitbar.image>https://github.com/jonathanpdiaz/widget_dolar_argentina/raw/master/Screen%20Shot%202018-11-27%20at%2013.47.32.png?raw=true</bitbar.image>
 
-
-const got = require("got");
 const bitbar = require("bitbar");
 const { flatten, compact } = require("lodash");
 
 const Blue = require('./strategies/blue');
 const Ambito = require('./strategies/ambito');
-const Satoshi = require('./strategies/satoshi');
-const Ripio = require('./strategies/ripio');
-const Buenbit = require('./strategies/buenbit');
+const CryptoYa = require('./strategies/cryptoya');
 
-const strategies = [Ambito, Satoshi, Ripio, Buenbit];
+const strategies = [Ambito, CryptoYa];
 
 async function applyStrategy(strategy) {
     const instance = new strategy();
@@ -39,33 +35,30 @@ async function getStats() {
     const promises = strategies.map(strategy => {
         return applyStrategy(strategy);
     })
-    const items = await Promise.all(promises);
+    const items = await Promise.all(promises)
     const menu = compact(flatten(items));
     return menu;
 }
 
 async function prepareWidget() {
     let menu = [];
-    
+
     const blue = await applyStrategy(Blue);
     menu.push(blue);
     menu.push(bitbar.separator);
-
     const stats = await getStats();
     const coins = stats.map(stat => {
         return {
-            text: stat,
-            font: "Courier New",
-            trim: false,
+            text: stat.label,
+            image: stat.image,
             color: bitbar.darkMode ? "white" : "black",
-            size: 12,
         };
     });
     menu = menu.concat(coins);
     menu.push(bitbar.separator);
 
     menu.push({
-        text: "🔄 Refresh",
+        text: "♻︎ Refresh",
         refresh: true,
     });
     bitbar(menu);
