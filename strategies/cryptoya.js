@@ -22,20 +22,20 @@ class CryptoYa extends Base {
             { key: "letsbit", label: "Let'sBit" },
         ]
         let values = keys.map(item => {
-            const { ask, bid } = this._stats[item.key];
+            const { totalAsk, totalBid } = this._stats[item.key];
             let labelLength = item.label.length;
             const label = labelLength < defaultLabelLength 
                 ? item.label.concat(" ".repeat(defaultLabelLength - labelLength)) 
                 : item.label;
-            const value = `$${Base.parse(bid)}/$${Base.parse(ask)}`;
+            const value = `$${Base.parse(totalBid)}/$${Base.parse(totalAsk)}`;
             return {
-                ask,
-                bid,
+                totalAsk,
+                totalBid,
                 image: usdcIcon,
                 label: `${label}\t${value}`
             }
         });
-        values = values.sort((a, b) => a.bid - b.bid);
+        values = values.sort((a, b) => a.totalBid - b.totalBid);
         return values.map(item => {
             const { label, image } = item;
             return { label, image };

@@ -1,4 +1,4 @@
-const strategy = require('./strategies/infodolar');
+const strategy = require('./strategies/cryptoya');
 
 async function applyStrategy(strategy) {
     const instance = new strategy();
