@@ -12,9 +12,10 @@ const { flatten, compact } = require("lodash");
 
 const Blue = require('./strategies/blue');
 const Ambito = require('./strategies/ambito');
-const CryptoYa = require('./strategies/cryptoya');
+const CryptoYaUSDC = require('./strategies/cryptoya');
+const CryptoYaUSDT = require('./strategies/cryptoya-usdt');
 
-const strategies = [Ambito, CryptoYa];
+const strategies = [Ambito, CryptoYaUSDC, CryptoYaUSDT];
 
 async function applyStrategy(strategy) {
     const instance = new strategy();
