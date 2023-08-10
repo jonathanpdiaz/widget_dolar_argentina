@@ -23,7 +23,8 @@ class CryptoYa extends Base {
       { key: "lemoncash", label: "Lemon" },
       { key: "belo", label: "Belo" },
       { key: "letsbit", label: "Let'sBit" },
-      { key: "fiwind", label: "Fiwind" }
+      { key: "fiwind", label: "Fiwind" },
+      { key: "binance", label: "Binance" }
     ]
     let values = [];
     keys.forEach(item => {
