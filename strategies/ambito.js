@@ -10,12 +10,15 @@ class Ambito extends Base {
 
     parseStats() {
         const keys = [
-            { key: "D\u00f3lar BNA", label: "🇦🇷" },
-            { key: 'D\u00f3lar Qatar', label: "💳" },
-            { key: "D\u00f3lar Informal", label: "💙" }
+            { key: "Dólar BNA", label: "🇦🇷" },
+            { key: 'Dólar Tarjeta', label: "💳" },
+            { key: "Dólar Informal", label: "💙" }
         ]
         return keys.map(item => {
-            const { compra, venta, variacion } = this._stats.find(stat => stat.nombre === item.key);
+            const { compra, venta, variacion, val1 } = this._stats.find(stat => stat.nombre === item.key);
+            if (val1) {
+                return { label: `${item.label}\t$${Base.parse(val1)} ~ ${Base.parse(variacion)}%` }
+            }
             return { label: `${item.label}\t$${Base.parse(compra)}/$${Base.parse(venta)} ~ ${Base.parse(variacion)}%` }
         })
     }
