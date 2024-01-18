@@ -27,12 +27,12 @@ async function applyStrategy(strategy) {
     try {
         const data = instance.parseStats();
         return data;
-    } catch (e) {
+    } catch (error) {
         return `${instance._name} parse failed.`;
     }
 }
 
-async function getStats() {
+async function getStats() { 
     const promises = strategies.map(strategy => {
         return applyStrategy(strategy);
     })
@@ -50,7 +50,7 @@ async function prepareWidget() {
     const stats = await getStats();
     const coins = stats.map(stat => {
         return {
-            text: stat.label,
+            text: stat.label || "",
             image: stat.image,
             color: bitbar.darkMode ? "white" : "black",
         };
