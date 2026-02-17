@@ -49,11 +49,14 @@ async function prepareWidget() {
     menu.push(bitbar.separator);
     const stats = await getStats();
     const coins = stats.map(stat => {
-        return {
+        const item = {
             text: stat.label || "",
-            image: stat.image,
             color: bitbar.darkMode ? "white" : "black",
         };
+        if (stat.image) {
+            item.image = stat.image;
+        }
+        return item;
     });
     menu = menu.concat(coins);
     menu.push(bitbar.separator);

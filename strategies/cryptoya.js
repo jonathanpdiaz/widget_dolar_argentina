@@ -13,7 +13,6 @@ class CryptoYa extends Base {
   }
 
   parseStats() {
-    const defaultLabelLength = 12;
     const keys = [
       { key: "huobi", label: "Huobi" },
       { key: "bitex", label: "Bitex" },
@@ -31,10 +30,7 @@ class CryptoYa extends Base {
     keys.forEach(item => {
       if (this._stats[item.key]) {
         const { totalAsk, totalBid } = this._stats[item.key];
-        let labelLength = item.label.length;
-        const label = labelLength < defaultLabelLength
-          ? item.label.concat(" ".repeat(defaultLabelLength - labelLength))
-          : item.label;
+        const label = item.label.padEnd(16);
         const value = `$${Base.parse(totalBid)}/$${Base.parse(totalAsk)}`;
         values.push({
           totalAsk,
